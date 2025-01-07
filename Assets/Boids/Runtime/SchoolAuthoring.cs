@@ -1,8 +1,7 @@
 using UnityEngine;
 using Unity.Entities;
-using Unity.Mathematics;
 
-namespace Boids
+namespace Boids.Runtime
 {
     
 public struct School : IComponentData 

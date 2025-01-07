@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace Boids
+namespace Boids.Runtime
 {
 
 [UpdateInGroup(typeof(InitializationSystemGroup))]
@@ -39,7 +39,7 @@ public partial struct SpawnSystem : ISystem
             var lt = SystemAPI.GetComponentRW<LocalTransform>(entity);
             
             var pos = (random.NextFloat3() - 1f) / 2f;
-            pos *= param.AreaScale;
+            pos *= param.AreaScale * 0.5f;
             lt.ValueRW.Position = pos;
             
             var dir = random.NextFloat3Direction();

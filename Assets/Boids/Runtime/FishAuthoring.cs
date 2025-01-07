@@ -2,7 +2,7 @@ using UnityEngine;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Boids
+namespace Boids.Runtime
 {
 
 public struct Fish : IComponentData
@@ -26,6 +26,7 @@ public class FishBaker : Baker<FishAuthoring>
         {
             Velocity = UnityEngine.Random.insideUnitSphere,
             Acceleration = 0f,
+            ParamEntity = Entity.Null,
         });
     }
 }

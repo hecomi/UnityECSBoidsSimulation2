@@ -2,21 +2,21 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace Boids
+namespace Boids.Runtime
 {
 
-public partial struct WallSystem : ISystem
+public partial struct AreaSystem : ISystem
 {
-    ComponentLookup<Parameter> _ParamLookUp;
+    ComponentLookup<Parameter> _paramLookUp;
 
     public void OnCreate(ref SystemState state) 
     {
-        _ParamLookUp = state.GetComponentLookup<Parameter>(isReadOnly: true);
+        _paramLookUp = state.GetComponentLookup<Parameter>(isReadOnly: true);
     }
     
     public void OnUpdate(ref SystemState state)
     {
-        _ParamLookUp.Update(ref state);
+        _paramLookUp.Update(ref state);
         
         var dt = SystemAPI.Time.DeltaTime;
     
@@ -25,16 +25,16 @@ public partial struct WallSystem : ISystem
                 RefRW<Fish>,
                 RefRO<LocalTransform>>())
         {
-            var param = _ParamLookUp.GetRefRO(fish.ValueRO.ParamEntity);
+            var param = _paramLookUp.GetRefRO(fish.ValueRO.ParamEntity);
             var scale = param.ValueRO.AreaScale * 0.5f;
-            var thresh = param.ValueRO.WallDistance;
-            var weight = param.ValueRO.WallForce;
+            var thresh = param.ValueRO.AreaDistance;
+            var weight = param.ValueRO.AreaForce;
             
             float3 pos = lt.ValueRO.Position;
             fish.ValueRW.Acceleration +=
-                GetAccelAgainstWall(-scale.x - pos.x, math.right(), thresh, weight) +
-                GetAccelAgainstWall(-scale.y - pos.y, math.up(), thresh, weight) +
-                GetAccelAgainstWall(-scale.z - pos.z, math.forward(), thresh, weight) +
+                GetAccelAgainstWall(pos.x - -scale.x, math.right(), thresh, weight) +
+                GetAccelAgainstWall(pos.y - -scale.y, math.up(), thresh, weight) +
+                GetAccelAgainstWall(pos.z - -scale.z, math.forward(), thresh, weight) +
                 GetAccelAgainstWall(+scale.x - pos.x, math.left(), thresh, weight) +
                 GetAccelAgainstWall(+scale.y - pos.y, math.down(), thresh, weight) +
                 GetAccelAgainstWall(+scale.z - pos.z, math.back(), thresh, weight);
@@ -45,7 +45,9 @@ public partial struct WallSystem : ISystem
     {
         if (dist < thresh)
         {
-            return dir * (weight / math.abs(dist / thresh));
+            dist = math.max(dist, 0.01f);
+            var a = dist / math.max(thresh, 0.01f);
+            return dir * (weight / a);
         }
         return float3.zero;
     }

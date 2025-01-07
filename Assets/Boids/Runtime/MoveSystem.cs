@@ -2,21 +2,21 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace Boids
+namespace Boids.Runtime
 {
 
 public partial struct MoveSystem : ISystem
 {
-    ComponentLookup<Parameter> _ParamLookUp;
+    ComponentLookup<Parameter> _paramLookUp;
 
     public void OnCreate(ref SystemState state) 
     {
-        _ParamLookUp = state.GetComponentLookup<Parameter>(isReadOnly: true);
+        _paramLookUp = state.GetComponentLookup<Parameter>(isReadOnly: true);
     }
     
     public void OnUpdate(ref SystemState state)
     {
-        _ParamLookUp.Update(ref state);
+        _paramLookUp.Update(ref state);
         
         var dt = SystemAPI.Time.DeltaTime;
         
@@ -25,7 +25,7 @@ public partial struct MoveSystem : ISystem
                 RefRW<Fish>,
                 RefRW<LocalTransform>>())
         {
-            var param = _ParamLookUp.GetRefRO(fish.ValueRO.ParamEntity);
+            var param = _paramLookUp.GetRefRO(fish.ValueRO.ParamEntity);
             var minSpeed = param.ValueRO.MinSpeed;
             var maxSpeed = param.ValueRO.MaxSpeed;
             
