@@ -180,15 +180,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MinSpeed: 2
-  MaxSpeed: 5
+  MaxSpeed: 4
   AreaScale:
     x: 5
     y: 5
     z: 5
-  AreaDistance: 3
+  AreaDistance: 1.6
   AreaForce: 1
-  AlignmentForce: 2
-  CohesionForce: 2
+  NeighborDistance: 0.5
+  NeighborAngle: 90
+  SeparationForce: 5
+  AlignmentForce: 5
+  CohesionForce: 5
 --- !u!1 &962064222
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &962064223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +230,9 @@ MonoBehaviour:
     z: 5
   AreaDistance: 5
   AreaForce: 2
+  NeighborDistance: 1
+  NeighborAngle: 90
+  SeparationForce: 5
   AlignmentForce: 2
   CohesionForce: 2
 --- !u!114 &962064224

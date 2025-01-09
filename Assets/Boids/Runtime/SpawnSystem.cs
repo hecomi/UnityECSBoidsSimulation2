@@ -34,6 +34,7 @@ public partial struct SpawnSystem : ISystem
         var manager = state.EntityManager;
         var entities = manager.Instantiate(school.Prefab, school.SpawnCount, Allocator.Temp);
         var random = new Random(school.RandomSeed);
+        
         foreach (var entity in entities)
         {
             var lt = SystemAPI.GetComponentRW<LocalTransform>(entity);

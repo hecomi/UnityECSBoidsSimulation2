@@ -25,13 +25,11 @@ public partial struct MoveSystem : ISystem
                 RefRW<Fish>,
                 RefRW<LocalTransform>>())
         {
-            var param = _paramLookUp.GetRefRO(fish.ValueRO.ParamEntity);
-            var minSpeed = param.ValueRO.MinSpeed;
-            var maxSpeed = param.ValueRO.MaxSpeed;
+            var param = _paramLookUp[fish.ValueRO.ParamEntity];
             
             fish.ValueRW.Velocity += fish.ValueRO.Acceleration * dt;
             var speed = math.length(fish.ValueRO.Velocity);
-            speed = math.clamp(speed, minSpeed, maxSpeed);
+            speed = math.clamp(speed, param.MinSpeed, param.MaxSpeed);
             var dir = math.normalize(fish.ValueRO.Velocity);
             fish.ValueRW.Velocity = dir * speed;
             fish.ValueRW.Acceleration = 0f;

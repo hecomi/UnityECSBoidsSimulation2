@@ -12,6 +12,12 @@ public struct Fish : IComponentData
     public Entity ParamEntity;
 }
 
+[InternalBufferCapacity(8)]
+public struct NeighborsEntityBuffer : IBufferElementData
+{
+    public Entity Entity;
+}
+
 public class FishAuthoring : MonoBehaviour
 {
 }
@@ -28,6 +34,8 @@ public class FishBaker : Baker<FishAuthoring>
             Acceleration = 0f,
             ParamEntity = Entity.Null,
         });
+        
+        AddBuffer<NeighborsEntityBuffer>(entity);
     }
 }
 

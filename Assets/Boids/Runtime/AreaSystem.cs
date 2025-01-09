@@ -18,17 +18,15 @@ public partial struct AreaSystem : ISystem
     {
         _paramLookUp.Update(ref state);
         
-        var dt = SystemAPI.Time.DeltaTime;
-    
         foreach (var (fish, lt) in 
             SystemAPI.Query<
                 RefRW<Fish>,
                 RefRO<LocalTransform>>())
         {
-            var param = _paramLookUp.GetRefRO(fish.ValueRO.ParamEntity);
-            var scale = param.ValueRO.AreaScale * 0.5f;
-            var thresh = param.ValueRO.AreaDistance;
-            var weight = param.ValueRO.AreaForce;
+            var param = _paramLookUp[fish.ValueRW.ParamEntity];
+            var scale = param.AreaScale * 0.5f;
+            var thresh = param.AreaDistance;
+            var weight = param.AreaForce;
             
             float3 pos = lt.ValueRO.Position;
             fish.ValueRW.Acceleration +=
