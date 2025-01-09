@@ -1,11 +1,11 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace Boids.Runtime
 {
 
+[UpdateBefore(typeof(MoveSystem))]
 public partial struct SeparationSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;

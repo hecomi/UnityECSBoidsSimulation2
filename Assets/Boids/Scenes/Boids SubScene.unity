@@ -179,19 +179,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb536cc9bd01247c484f81a5347e09b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinSpeed: 2
-  MaxSpeed: 4
-  AreaScale:
-    x: 5
-    y: 5
-    z: 5
-  AreaDistance: 1.6
-  AreaForce: 1
-  NeighborDistance: 0.5
-  NeighborAngle: 90
-  SeparationForce: 5
-  AlignmentForce: 5
-  CohesionForce: 5
+  param:
+    Type: 0
+    MinSpeed: 2
+    MaxSpeed: 4
+    AreaScale: {x: 5, y: 5, z: 5}
+    AreaDistance: 3
+    AreaForce: 1
+    NeighborDistance: 0.3
+    NeighborAngle: 90
+    SeparationForce: 5
+    AlignmentForce: 5
+    CohesionForce: 5
 --- !u!1 &962064222
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &962064223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,19 +221,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb536cc9bd01247c484f81a5347e09b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinSpeed: 5
-  MaxSpeed: 10
-  AreaScale:
-    x: 5
-    y: 5
-    z: 5
-  AreaDistance: 5
-  AreaForce: 2
-  NeighborDistance: 1
-  NeighborAngle: 90
-  SeparationForce: 5
-  AlignmentForce: 2
-  CohesionForce: 2
+  param:
+    Type: 1
+    MinSpeed: 2
+    MaxSpeed: 5
+    AreaScale: {x: 5, y: 5, z: 5}
+    AreaDistance: 3
+    AreaForce: 1
+    NeighborDistance: 1
+    NeighborAngle: 90
+    SeparationForce: 5
+    AlignmentForce: 2
+    CohesionForce: 2
 --- !u!114 &962064224
 MonoBehaviour:
   m_ObjectHideFlags: 0

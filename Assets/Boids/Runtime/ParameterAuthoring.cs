@@ -7,6 +7,7 @@ namespace Boids.Runtime
     
 public struct Parameter : IComponentData
 {
+    public int Type;
     public float MinSpeed;
     public float MaxSpeed;
     public float3 AreaScale;
@@ -17,16 +18,35 @@ public struct Parameter : IComponentData
     public float SeparationForce;
     public float AlignmentForce;
     public float CohesionForce;
+    
+    public Parameter(ParameterData param)
+    {
+        Type = param.Type;
+        MinSpeed = param.MinSpeed;
+        MaxSpeed = param.MaxSpeed;
+        AreaScale = param.AreaScale;
+        AreaDistance = param.AreaDistance;
+        AreaForce = param.AreaForce;
+        NeighborDistance = param.NeighborDistance;
+        NeighborAngle = param.NeighborAngle;
+        SeparationForce = param.SeparationForce;
+        AlignmentForce = param.AlignmentForce;
+        CohesionForce = param.CohesionForce;
+    }
 }
 
-public class ParameterAuthoring : MonoBehaviour
+[System.Serializable]
+public class ParameterData
 {
+    [Header("Type")]
+    public int Type = 0;
+    
     [Header("Move")]
     public float MinSpeed = 2f;
     public float MaxSpeed = 5f;
     
     [Header("Area")]
-    public float3 AreaScale = 5f;
+    public Vector3 AreaScale = Vector3.one * 5f;
     public float AreaDistance = 3f;
     public float AreaForce = 1f;
     
@@ -42,6 +62,26 @@ public class ParameterAuthoring : MonoBehaviour
     
     [Header("Cohesion")]
     public float CohesionForce = 2f;
+    
+    public void Set(in Parameter param)
+    {
+        Type = param.Type;
+        MinSpeed = param.MinSpeed;
+        MaxSpeed = param.MaxSpeed;
+        AreaScale = param.AreaScale;
+        AreaDistance = param.AreaDistance;
+        AreaForce = param.AreaForce;
+        NeighborDistance = param.NeighborDistance;
+        NeighborAngle = param.NeighborAngle;
+        SeparationForce = param.SeparationForce;
+        AlignmentForce = param.AlignmentForce;
+        CohesionForce = param.CohesionForce;
+    }
+}
+
+public class ParameterAuthoring : MonoBehaviour
+{
+    public ParameterData param = new();
 }
 
 public class ParameterBaker : Baker<ParameterAuthoring>
@@ -49,20 +89,8 @@ public class ParameterBaker : Baker<ParameterAuthoring>
     public override void Bake(ParameterAuthoring src)
     {
         var entity = GetEntity(TransformUsageFlags.None);
-        
-        AddComponent(entity, new Parameter()
-        {
-            MinSpeed = src.MinSpeed,
-            MaxSpeed = src.MaxSpeed,
-            AreaScale = src.AreaScale,
-            AreaDistance = src.AreaDistance,
-            AreaForce = src.AreaForce,
-            NeighborDistance = src.NeighborDistance,
-            NeighborAngle = src.NeighborAngle,
-            SeparationForce = src.SeparationForce,
-            AlignmentForce = src.AlignmentForce,
-            CohesionForce = src.CohesionForce,
-        });
+        var param = src.param;
+        AddComponent(entity, new Parameter(param));
     }
 }
 

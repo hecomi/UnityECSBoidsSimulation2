@@ -4,7 +4,8 @@ using Unity.Transforms;
 
 namespace Boids.Runtime
 {
-
+    
+[UpdateBefore(typeof(MoveSystem))]
 public partial struct AreaSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;
