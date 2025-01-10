@@ -23,7 +23,7 @@ public class SchoolBaker : Baker<SchoolAuthoring>
 {
     public override void Bake(SchoolAuthoring src)
     {
-        var entity = GetEntity(TransformUsageFlags.None);
+        var entity = GetEntity(TransformUsageFlags.Dynamic);
         var prefab = GetEntity(src.Prefab, TransformUsageFlags.Dynamic);
         
         AddComponent(entity, new School()

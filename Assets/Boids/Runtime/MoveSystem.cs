@@ -27,14 +27,20 @@ public partial struct MoveSystem : ISystem
         {
             var param = _paramLookUp[fish.ValueRO.ParamEntity];
             
-            fish.ValueRW.Velocity += fish.ValueRO.Acceleration * dt;
-            var speed = math.length(fish.ValueRO.Velocity);
+            var v = fish.ValueRO.Velocity;
+            v += fish.ValueRO.Acceleration * dt;
+            var speed = math.length(v);
             speed = math.clamp(speed, param.MinSpeed, param.MaxSpeed);
-            var dir = math.normalize(fish.ValueRO.Velocity);
-            fish.ValueRW.Velocity = dir * speed;
+            var dir = math.normalize(v);
+            v = dir * speed;
+            fish.ValueRW.Velocity = v;
+            
             fish.ValueRW.Acceleration = 0f;
             
-            lt.ValueRW.Position += fish.ValueRO.Velocity * dt;
+            var pos = lt.ValueRO.Position;
+            pos += fish.ValueRO.Velocity * dt;
+            lt.ValueRW.Position = pos;
+            
             var up = math.up();
             lt.ValueRW.Rotation = quaternion.LookRotationSafe(dir, up);
         }

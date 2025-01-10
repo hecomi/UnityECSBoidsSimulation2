@@ -5,14 +5,14 @@ namespace Boids.Runtime
 
 public class ParameterUpdater : MonoBehaviour
 {
-    public ParameterData paramData;
+    public Parameter param = Parameter.Default;
     bool _isGot = false;
     int _type = 0;
 
     void OnEnable()
     {
-        _type = paramData.Type;
-        _isGot = Utility.GetParameter(paramData);
+        _type = param.Type;
+        _isGot = Parameter.Get(ref param);
     }
     
     void OnDisable()
@@ -22,22 +22,22 @@ public class ParameterUpdater : MonoBehaviour
 
     void Update()
     {
-        if (paramData.Type != _type)
+        if (param.Type != _type)
         {
             _isGot = false;
         }
         
         if (!_isGot)
         {
-            _isGot = Utility.GetParameter(paramData);
+            _isGot = Parameter.Get(ref param);
             if (_isGot) 
             {
-                _type = paramData.Type;
+                _type = param.Type;
             }
         }
         else
         {
-            Utility.SetParameter(paramData);
+            Parameter.Set(param);
         }
     }
 }

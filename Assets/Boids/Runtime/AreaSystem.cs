@@ -9,34 +9,42 @@ namespace Boids.Runtime
 public partial struct AreaSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;
+    ComponentLookup<LocalTransform> _transformLookUp;
 
     public void OnCreate(ref SystemState state) 
     {
         _paramLookUp = state.GetComponentLookup<Parameter>(isReadOnly: true);
+        _transformLookUp = state.GetComponentLookup<LocalTransform>(isReadOnly: true);
     }
     
     public void OnUpdate(ref SystemState state)
     {
         _paramLookUp.Update(ref state);
+        _transformLookUp.Update(ref state);
         
         foreach (var (fish, lt) in 
             SystemAPI.Query<
                 RefRW<Fish>,
                 RefRO<LocalTransform>>())
         {
-            var param = _paramLookUp[fish.ValueRW.ParamEntity];
+            var paramEntity = fish.ValueRW.ParamEntity;
+            var param = _paramLookUp[paramEntity];
+            var areaLt = _transformLookUp[paramEntity];
             var scale = param.AreaScale * 0.5f;
             var thresh = param.AreaDistance;
             var weight = param.AreaForce;
             
-            float3 pos = lt.ValueRO.Position;
-            fish.ValueRW.Acceleration +=
+            var pos = lt.ValueRO.Position;
+            pos = math.transform(areaLt.ToInverseMatrix(), pos);
+            var addAccel =
                 GetAccelAgainstWall(pos.x - -scale.x, math.right(), thresh, weight) +
                 GetAccelAgainstWall(pos.y - -scale.y, math.up(), thresh, weight) +
                 GetAccelAgainstWall(pos.z - -scale.z, math.forward(), thresh, weight) +
                 GetAccelAgainstWall(+scale.x - pos.x, math.left(), thresh, weight) +
                 GetAccelAgainstWall(+scale.y - pos.y, math.down(), thresh, weight) +
                 GetAccelAgainstWall(+scale.z - pos.z, math.back(), thresh, weight);
+            addAccel = math.rotate(areaLt.Rotation, addAccel);
+            fish.ValueRW.Acceleration += addAccel;
         }
     }
     

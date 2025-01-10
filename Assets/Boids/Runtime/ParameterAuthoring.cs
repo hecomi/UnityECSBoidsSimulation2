@@ -1,96 +1,111 @@
 using UnityEngine;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Collections;
+using Unity.Transforms;
 
 namespace Boids.Runtime
 {
     
+[System.Serializable]
 public struct Parameter : IComponentData
 {
     public int Type;
-    public float MinSpeed;
-    public float MaxSpeed;
-    public float3 AreaScale;
-    public float AreaDistance;
-    public float AreaForce;
-    public float NeighborDistance;
-    public float NeighborAngle;
-    public float SeparationForce;
-    public float AlignmentForce;
-    public float CohesionForce;
-    
-    public Parameter(ParameterData param)
-    {
-        Type = param.Type;
-        MinSpeed = param.MinSpeed;
-        MaxSpeed = param.MaxSpeed;
-        AreaScale = param.AreaScale;
-        AreaDistance = param.AreaDistance;
-        AreaForce = param.AreaForce;
-        NeighborDistance = param.NeighborDistance;
-        NeighborAngle = param.NeighborAngle;
-        SeparationForce = param.SeparationForce;
-        AlignmentForce = param.AlignmentForce;
-        CohesionForce = param.CohesionForce;
-    }
-}
-
-[System.Serializable]
-public class ParameterData
-{
-    [Header("Type")]
-    public int Type = 0;
     
     [Header("Move")]
-    public float MinSpeed = 2f;
-    public float MaxSpeed = 5f;
+    public float MinSpeed;
+    public float MaxSpeed;
     
     [Header("Area")]
-    public Vector3 AreaScale = Vector3.one * 5f;
-    public float AreaDistance = 3f;
-    public float AreaForce = 1f;
+    public float AreaDistance;
+    public float AreaForce;
+    public float3 AreaScale;
     
     [Header("Neighbors")]
-    public float NeighborDistance = 1f;
-    public float NeighborAngle = 90f;
+    public float NeighborDistance;
+    public float NeighborAngle;
     
     [Header("Separation")]
-    public float SeparationForce = 5f;
+    public float SeparationForce;
     
     [Header("Alignment")]
-    public float AlignmentForce = 2f;
+    public float AlignmentForce;
     
     [Header("Cohesion")]
-    public float CohesionForce = 2f;
+    public float CohesionForce;
     
-    public void Set(in Parameter param)
+#if UNITY_EDITOR
+    [Header("Debug")]
+    public bool DebugDraw;
+    public float3 DebugDrawAreaColor;
+#endif
+    
+    public static Parameter Default
     {
-        Type = param.Type;
-        MinSpeed = param.MinSpeed;
-        MaxSpeed = param.MaxSpeed;
-        AreaScale = param.AreaScale;
-        AreaDistance = param.AreaDistance;
-        AreaForce = param.AreaForce;
-        NeighborDistance = param.NeighborDistance;
-        NeighborAngle = param.NeighborAngle;
-        SeparationForce = param.SeparationForce;
-        AlignmentForce = param.AlignmentForce;
-        CohesionForce = param.CohesionForce;
+        get => new Parameter()
+        {
+            Type = 0,
+            MinSpeed = 2f,
+            MaxSpeed = 5f,
+            AreaScale = 5f,
+            AreaDistance = 3f,
+            AreaForce = 1f,
+            NeighborDistance = 1f,
+            NeighborAngle = 90f,
+            SeparationForce = 5f,
+            AlignmentForce = 5f,
+            CohesionForce = 5f,
+            DebugDraw = false,
+            DebugDrawAreaColor = 1f,
+        };
+    }
+    
+    public static bool Set(in Parameter newParam)
+    {
+        var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        var query = manager.CreateEntityQuery(ComponentType.ReadWrite<Parameter>());
+        var entities = query.ToEntityArray(Allocator.Temp);
+        if (entities.Length == 0) return false;
+        
+        bool set = false;
+        foreach (var entity in entities)
+        {
+            var param = manager.GetComponentData<Parameter>(entity);
+            if (param.Type != newParam.Type) continue;
+            manager.SetComponentData(entity, newParam);
+            set = true;
+        }
+        return set;
+    }
+    
+    public static bool Get(ref Parameter outParam)
+    {
+        var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        var query = manager.CreateEntityQuery(ComponentType.ReadOnly<Parameter>());
+        var parameters = query.ToComponentDataArray<Parameter>(Allocator.Temp);
+        if (parameters.Length == 0) return false;
+        
+        foreach (var param in parameters)
+        {
+            if (param.Type != outParam.Type) continue;
+            outParam = param;
+            return true;
+        }
+        return false;
     }
 }
 
 public class ParameterAuthoring : MonoBehaviour
 {
-    public ParameterData param = new();
+    public Parameter param = Parameter.Default;
 }
 
 public class ParameterBaker : Baker<ParameterAuthoring>
 {
     public override void Bake(ParameterAuthoring src)
     {
-        var entity = GetEntity(TransformUsageFlags.None);
-        var param = src.param;
-        AddComponent(entity, new Parameter(param));
+        var entity = GetEntity(TransformUsageFlags.Dynamic);
+        AddComponent(entity, src.param);
     }
 }
 
