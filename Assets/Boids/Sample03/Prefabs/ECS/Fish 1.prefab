@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6040987484143747455}
   - component: {fileID: 782848230856772173}
   - component: {fileID: 421973321183407170}
-  - component: {fileID: -313150225975971604}
+  - component: {fileID: -5379351039879332032}
   m_Layer: 0
   m_Name: Fish 1
   m_TagString: Untagged
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76f3184be188e4243a29ff7f55648295, type: 2}
+  - {fileID: 2100000, guid: 471ee57634b2043059366ee7054a2754, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,7 +87,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-313150225975971604
+--- !u!114 &-5379351039879332032
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,6 +96,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7916036323514969036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdaff4015d7854f7bb9006ac94d619ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 3814166bed5a446bab99b7e14a962b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
