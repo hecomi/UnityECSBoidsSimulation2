@@ -5,7 +5,7 @@ using Unity.Transforms;
 
 namespace Boids.Sample01.Runtime
 {
-
+    
 public partial struct NeighborsDetectionSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;

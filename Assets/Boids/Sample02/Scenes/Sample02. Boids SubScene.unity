@@ -169,11 +169,11 @@ MonoBehaviour:
     MinSpeed: 2
     MaxSpeed: 4
     AreaDistance: 1
-    AreaForce: 1
-    NeighborDistance: 0.3
+    AreaForce: 5
+    NeighborDistance: 0.5
     NeighborAngle: 90
-    SeparationForce: 5
-    AlignmentForce: 5
+    SeparationForce: 3
+    AlignmentForce: 4
     CohesionForce: 5
     DebugAreaColor:
       x: 1
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefab: {fileID: 7916036323514969036, guid: 8f12b1b92603a4f60893b69c00e765d1, type: 3}
-  SpawnCount: 100
+  SpawnCount: 300
   RandomSeed: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

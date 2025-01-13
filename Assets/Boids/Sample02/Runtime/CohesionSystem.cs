@@ -6,6 +6,7 @@ namespace Boids.Sample02.Runtime
 {
 
 [UpdateBefore(typeof(MoveSystem))]
+[UpdateAfter(typeof(NeighborsDetectionSystem))]
 public partial struct CohesionSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;

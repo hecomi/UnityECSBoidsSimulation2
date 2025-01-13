@@ -4,6 +4,7 @@ using Unity.Entities;
 namespace Boids.Sample02.Runtime
 {
     
+[ChunkSerializable]
 public struct School : IComponentData 
 {
     public Entity Prefab;

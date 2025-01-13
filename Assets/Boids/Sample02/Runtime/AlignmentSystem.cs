@@ -5,6 +5,7 @@ namespace Boids.Sample02.Runtime
 {
 
 [UpdateBefore(typeof(MoveSystem))]
+[UpdateAfter(typeof(NeighborsDetectionSystem))]
 public partial struct AlignmentSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;

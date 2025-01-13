@@ -6,6 +6,7 @@ namespace Boids.Sample01.Runtime
 {
 
 [UpdateBefore(typeof(MoveSystem))]
+[UpdateAfter(typeof(NeighborsDetectionSystem))]
 public partial struct SeparationSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;
@@ -39,9 +40,12 @@ public partial struct SeparationSystem : ISystem
                 var neighborEntity = neighbors[i].Entity;
                 var neighborPos = _transformLookUp[neighborEntity].Position;
                 var to = neighborPos - pos;
-                forceDir += -math.normalizesafe(to);
+                var dist = math.length(to);
+                var dir = math.normalizesafe(to);
+                forceDir += -dir / math.max(dist, 0.1f);
             }
             forceDir /= n;
+            forceDir = math.normalizesafe(forceDir);
             
             var param = _paramLookUp[fish.ValueRW.ParamEntity];
             fish.ValueRW.Acceleration += forceDir * param.SeparationForce;
