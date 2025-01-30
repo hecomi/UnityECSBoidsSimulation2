@@ -9,13 +9,13 @@ namespace Boids.Sample01.Runtime
 public partial struct NeighborsDetectionSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;
-    BufferLookup<NeighborsEntityBuffer> _neighborsLookUp;
+    BufferLookup<NeighborsEntityBufferElement> _neighborsLookUp;
     EntityQuery _query;
 
     public void OnCreate(ref SystemState state) 
     {
         _paramLookUp = state.GetComponentLookup<Parameter>(isReadOnly: true);
-        _neighborsLookUp = state.GetBufferLookup<NeighborsEntityBuffer>(isReadOnly: false);
+        _neighborsLookUp = state.GetBufferLookup<NeighborsEntityBufferElement>(isReadOnly: false);
         _query = SystemAPI.QueryBuilder().WithAll<Fish, LocalTransform>().Build();
     }
     
@@ -60,7 +60,7 @@ public partial struct NeighborsDetectionSystem : ISystem
                 if (prod < prodThresh) continue;
                 
                 var entity1 = entities[j];
-                var elem = new NeighborsEntityBuffer() { Entity = entity1 };
+                var elem = new NeighborsEntityBufferElement() { Entity = entity1 };
                 neighbors0.Add(elem);
                 
                 if (neighbors0.Length == neighbors0.Capacity) break;

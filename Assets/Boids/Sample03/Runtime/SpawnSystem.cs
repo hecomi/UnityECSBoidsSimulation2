@@ -8,10 +8,10 @@ using Random = Unity.Mathematics.Random;
 namespace Boids.Sample03.Runtime
 {
 
-[BurstCompile]
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 public partial struct SpawnSystem : ISystem
 {
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         foreach (var (school, param, lt, ptm, entity) in 
@@ -58,6 +58,10 @@ public partial struct SpawnSystem : ISystem
             fish.ValueRW.Velocity = dir * param.MinSpeed;
             fish.ValueRW.Acceleration = 0f;
             fish.ValueRW.ParamEntity = groupEntity;
+            
+            var jobData = SystemAPI.GetComponentRW<FishJobData>(entity);
+            jobData.ValueRW.Position = lt.ValueRO.Position;
+            jobData.ValueRW.Velocity = fish.ValueRO.Velocity;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Boids.Sample02.Runtime
 public partial struct NeighborsDetectionSystem : ISystem
 {
     ComponentLookup<Parameter> _paramLookUp;
-    BufferLookup<NeighborsEntityBuffer> _neighborsLookUp;
+    BufferLookup<NeighborsEntityBufferElement> _neighborsLookUp;
     EntityQuery _query;
     float _cellsize;
     NativeArray<int3> _cellOffsets;
@@ -22,7 +22,7 @@ public partial struct NeighborsDetectionSystem : ISystem
     public void OnCreate(ref SystemState state) 
     {
         _paramLookUp = state.GetComponentLookup<Parameter>(isReadOnly: true);
-        _neighborsLookUp = state.GetBufferLookup<NeighborsEntityBuffer>(isReadOnly: false);
+        _neighborsLookUp = state.GetBufferLookup<NeighborsEntityBufferElement>(isReadOnly: false);
         _query = SystemAPI.QueryBuilder().WithAll<Fish, LocalTransform>().Build();
         _cellsize = 0.5f;
         _cellOffsets = new NativeArray<int3>(27, Allocator.Persistent);
@@ -109,7 +109,7 @@ public partial struct NeighborsDetectionSystem : ISystem
                     var prod = math.dot(dir, fwd0);
                     if (prod < prodThresh) continue;
             
-                    var elem = new NeighborsEntityBuffer() { Entity = entity1 };
+                    var elem = new NeighborsEntityBufferElement() { Entity = entity1 };
                     neighbors0.Add(elem);
                     if (neighbors0.Length >= neighbors0.Capacity) break;
                 } while (hashMap.TryGetNextValue(out j, ref it));

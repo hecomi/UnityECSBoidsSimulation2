@@ -10,7 +10,7 @@ public readonly partial struct FishAspect : IAspect
 {
     readonly RefRW<Fish> _fish;
     readonly RefRW<LocalTransform> _localTransform;
-    readonly DynamicBuffer<NeighborsEntityBuffer> _neighborsEntityBuffers;
+    readonly DynamicBuffer<NeighborsEntityBufferElement> _neighborsEntityBuffer;
     
     public Fish Fish
     {
@@ -41,7 +41,7 @@ public readonly partial struct FishAspect : IAspect
         set => _localTransform.ValueRW = value;
     }
     
-    public DynamicBuffer<NeighborsEntityBuffer> Neighbors => _neighborsEntityBuffers;
+    public DynamicBuffer<NeighborsEntityBufferElement> Neighbors => _neighborsEntityBuffer;
 }
     
 }

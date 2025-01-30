@@ -4,6 +4,8 @@ using Unity.Transforms;
 
 namespace Boids.Sample02.Runtime
 {
+    
+    
 
 [UpdateBefore(typeof(MoveSystem))]
 [UpdateAfter(typeof(NeighborsDetectionSystem))]
@@ -27,7 +29,7 @@ public partial struct SeparationSystem : ISystem
             SystemAPI.Query<
                 RefRW<Fish>,
                 RefRO<LocalTransform>,
-                DynamicBuffer<NeighborsEntityBuffer>>())
+                DynamicBuffer<NeighborsEntityBufferElement>>())
         {
             var n = neighbors.Length;
             if (n == 0) continue;

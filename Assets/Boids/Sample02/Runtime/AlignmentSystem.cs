@@ -25,7 +25,7 @@ public partial struct AlignmentSystem : ISystem
         foreach (var (fish, neighbors) in 
             SystemAPI.Query<
                 RefRW<Fish>,
-                DynamicBuffer<NeighborsEntityBuffer>>())
+                DynamicBuffer<NeighborsEntityBufferElement>>())
         {
             var n = neighbors.Length;
             if (n == 0) continue;

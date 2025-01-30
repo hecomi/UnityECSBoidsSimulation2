@@ -13,7 +13,7 @@ public struct Fish : IComponentData
 }
 
 [InternalBufferCapacity(8)]
-public struct NeighborsEntityBuffer : IBufferElementData
+public struct NeighborsEntityBufferElement : IBufferElementData
 {
     public Entity Entity;
 }
@@ -35,7 +35,7 @@ public class FishBaker : Baker<FishAuthoring>
             ParamEntity = Entity.Null,
         });
         
-        AddBuffer<NeighborsEntityBuffer>(entity);
+        AddBuffer<NeighborsEntityBufferElement>(entity);
     }
 }
 

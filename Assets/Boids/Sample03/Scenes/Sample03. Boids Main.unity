@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawAreas: 1
-  drawBoids: 1
+  drawBoids: 0
   boidScale: {x: 0.1, y: 0.1, z: 0.3}
 --- !u!1 &330585543
 GameObject:
